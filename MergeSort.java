@@ -26,9 +26,9 @@ public class MergeSort{
         int j = mid+1;
         for(int k = low; k <= high; k++){
             if(i > mid){
-                arr[k] = arr1[j+1];
+                arr[k] = arr1[j++];
             }else if(j > high){
-                arr[k] = arr1[i+1];
+                arr[k] = arr1[i++];
             }else{
                 metrics.incrementComparisons();
                 if(arr1[j] < arr1[i]){
