@@ -1,42 +1,45 @@
 # Sorting and Selection Algorithms Benchmark
 
-An academic Java project focused on implementing, optimizing, and benchmarking fundamental divide-and-conquer algorithms: **QuickSort**, **MergeSort**, and **QuickSelect**.
+An academic Java project implementing, optimizing, and benchmarking Divide-and-Conquer algorithms: **QuickSort**, **MergeSort**, and **QuickSelect**.
 
 ---
 
-## 🛠 Implemented Algorithms & Optimizations
+## 🛠 Implemented Algorithms & Features
 
-### 1. QuickSort
-* **3-Way Partitioning (Dutch National Flag):** Handles duplicate keys efficiently by grouping elements equal to the pivot, avoiding $O(n^2)$ degradation on arrays with high redundancy.
-* **Randomized Pivot Selection:** Mitigates worst-case performance on pre-sorted or reverse-sorted input sequences.
-* **Recursion Tracking:** Monitors maximum stack depth to observe logarithmic space complexity.
+* **QuickSort:**
+  * **Randomized Pivot:** Avoids $O(n^2)$ complexity on ordered arrays.
+  * **3-Way Partitioning:** Efficiently groups duplicate elements ($<, =, >$).
+  * **Bounded Stack Depth:** Recurs into the smaller subarray first, guaranteeing $O(\log n)$ max recursion depth.
 
-### 2. MergeSort
-* **Cutoff to InsertionSort:** Switches to InsertionSort for small sub-arrays ($\le 15$ elements) to eliminate recursive overhead on tiny partitions.
-* **Reusable Auxiliary Buffer:** Allocates a single temporary array once in the primary call to prevent frequent memory allocation and garbage collection overhead during recursive steps.
+* **MergeSort:**
+  * **Single Auxiliary Array:** Allocates `aux` array only once in the top-level call to prevent memory churn.
+  * **Cutoff:** Switches to InsertionSort for subarrays of size $\le 15$.
 
-### 3. QuickSelect
-* **Single-Branch Recursion:** Finds the $k$-th smallest element in expected $O(n)$ time by pruning non-relevant sub-arrays instead of fully sorting the dataset.
-* **3-Way Partitioning:** Utilizes dual-boundary partitioning to bypass duplicate values during selection.
-
----
-
-## 📊 Benchmark Metrics
-
-For every algorithm execution, the `Metrics` object tracks:
-1. **Execution Time (ms):** Wall-clock time measured via `System.currentTimeMillis()`.
-2. **Key Comparisons:** Total count of element-to-element comparison operations.
-3. **Maximum Recursion Depth:** Peak depth reached by the call stack.
+* **QuickSelect:**
+  * **Single-Branch Partitioning:** Finds the $k$-th smallest element in expected $O(n)$ time.
+  * Throws `IllegalArgumentException` for invalid inputs ($k < 0$ or $k \ge n$).
 
 ---
 
-## 🚀 Build & Run Instructions
+## 📊 Benchmark & CSV Output
 
-### Prerequisites
-* **JDK 8** or higher installed.
+The benchmark runner executes **5 runs** per configuration and records the **median values** to eliminate JVM warm-up/GC noise.
 
-### Compilation and Execution
+### CSV Structure (`results.csv`)
+The generated `results.csv` contains:
+`algorithm,input,n,time_ms,comparisons,max_depth`
 
-1. Compile all source files:
+### Asymptotic Ratio Metric
+To verify theoretical bounds empirically:
+* **Sorting Algorithms:** $\text{Ratio} = \frac{\text{Comparisons}}{n \cdot \log_2(n)}$
+* **QuickSelect:** $\text{Ratio} = \frac{\text{Comparisons}}{n}$
+
+If the algorithm matches its theoretical complexity, the ratio approaches a constant value $c$ as $n$ grows.
+
+---
+
+## 🚀 How to Run
+
+1. **Compile:**
    ```bash
    javac *.java
